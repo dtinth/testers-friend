@@ -8,6 +8,7 @@ A tool for **semi-automated testing.** Use cases:
 This tool:
 
 - Opens up **Chromium** (Google Chrome) with a JavaScript console to let you use JavaScript to automate it.
+- Everytime you run you get a **blank profile**. This makes for a more reproducable tests.
 - Based on **Puppeteer** so you can reuse the knowledge to write fully-automated tests with Puppeteer.
 - TODO
 
