@@ -20,7 +20,7 @@ export function main() {
 
       const context: any = { browser, console }
       context.global = context
-      Object.assign(global, { browser })
+      Object.assign(global, { browser, puppeteer: require('puppeteer') })
       const server = await createServer({
         getContext: () => context,
       })
