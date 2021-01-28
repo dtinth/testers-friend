@@ -3,6 +3,7 @@
 A tool for **semi-automated testing.** Use cases:
 
 - For when you want to do **exploratory testing** but doing everything manually is too tedious.
+- For when you want to do **replicate a bug** repeatedly but don’t want to do it all manually.
 - When you don’t have the resource to set up a full test automation system but would still benefit from little automation here and there. At least less efficient stuff can be done more efficiently.
 
 This tool:
