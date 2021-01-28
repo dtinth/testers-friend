@@ -3,7 +3,6 @@
   "name": "Tester’s friend",
   "description": "Semi-automation tool for web testers",
   "version": "0.0.1",
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"
@@ -13,5 +12,14 @@
     "scripts": ["background.js"],
     "persistent": true
   },
-  "permissions": ["debugger", "<all_urls>"]
+  "permissions": ["debugger", "<all_urls>"],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Open tester’s friend panel"
+    }
+  }
 }

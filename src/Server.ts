@@ -3,16 +3,17 @@ import express from 'express'
 import { Server } from 'http'
 import { runInNewContext } from 'vm'
 
-export async function createServer({ getContext }) {
+export async function createServer({ handlers }) {
   const secret = randomBytes(32).toString('hex')
   const app = express()
   app.use(express.json())
   app.post('/' + secret + '/rpc', async (req, res, next) => {
     try {
-      const result = await runInNewContext(
-        `(async()=>{\n${req.body.code}\n})()`,
-        getContext()
-      )
+      const handler = handlers[req.body.method]
+      if (!handler) {
+        throw new Error('Method not found: ' + req.body.method)
+      }
+      const result = await handler(req.body.params)
       res.json({
         result,
       })

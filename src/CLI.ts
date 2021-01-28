@@ -4,6 +4,7 @@ import delay from 'delay'
 import yargs from 'yargs'
 import inspector from 'inspector'
 import { createServer } from './Server'
+import { runInNewContext } from 'vm'
 
 export function main() {
   inspector.open()
@@ -22,15 +23,32 @@ export function main() {
       context.global = context
       Object.assign(global, { browser, puppeteer: require('puppeteer') })
       const server = await createServer({
-        getContext: () => context,
+        handlers: {
+          'friend/execute': async ({ code }) => {
+            return await runInNewContext(`(async()=>{\n${code}\n})()`, context)
+          },
+          'friend/commands': async () => {
+            return [
+              {
+                command: 'friend.reloadConfig',
+                title: 'Reload configuration file',
+                category: 'Friend',
+              },
+              {
+                command: 'friend.openDevTools',
+                title: 'Open Puppeteer REPL',
+                category: 'Friend',
+              },
+            ]
+          },
+        },
       })
-      console.log(server.address)
+      console.log('[testers-friend]', 'RPC server set up at', server.address)
 
       const extension = await getExtension(browser)
-
       const result = await (await extension.target.page()).evaluate(
-        // @ts-ignore
         (address, inspectorUrl) => {
+          // @ts-ignore
           setTarget(address)
           chrome.windows.create({
             url: `devtools://devtools/bundled/worker_app.html?ws=${inspectorUrl.replace(
@@ -43,7 +61,6 @@ export function main() {
         server.address,
         inspector.url()
       )
-      console.log(result)
     })
     .parse()
 }

@@ -28,17 +28,20 @@ chrome.runtime.onMessage.addListener(
         ? 'from a content script:' + sender.tab.url
         : 'from the extension'
     )
-    if (request.execute) {
+    if (request.rpc) {
       const response = await fetch(targetUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(request.execute),
+        body: JSON.stringify(request.rpc),
       })
       const data = await response.json()
-      console.log(data)
-      return data
+      if (data.result) {
+        return data.result
+      } else {
+        throw new Error('RPC error: ' + data.error.message)
+      }
     }
   })
 )
