@@ -19,7 +19,7 @@ This tool:
 
 This tool is in development... You have to run from source.
 
-1. Make sure you have Node.js 18+ and pnpm installed.
+1. Make sure you have Node.js 20+ and pnpm installed.
 2. Clone the repository.
 3. `pnpm install`
 4. `node dev`
